@@ -30,3 +30,19 @@ model Session {
   collaborator  Boolean?  @default(false)
   emailVerified Boolean?  @default(false)
 }
+
+model Car {
+  id            Int               @id @default(autoincrement())
+  brand         String
+  driverName    String?
+  licensePlace  String            @unique
+  year          Int
+  fuelType      CarFuelType       @relation(fields: [fuelTypeId], references: [id])
+  fuelTypeId    Int
+}
+
+model CarFuelType {
+  id            Int               @id @default(autoincrement())
+  name          String
+  cars          Car[]
+}
