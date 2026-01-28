@@ -2,7 +2,7 @@
 CREATE TABLE "Car" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "brand" TEXT NOT NULL,
-    "licensePlace" TEXT NOT NULL,
+    "licensePlate" TEXT NOT NULL,
     "year" INTEGER NOT NULL,
     "fuelTypeId" INTEGER NOT NULL,
     CONSTRAINT "Car_fuelTypeId_fkey" FOREIGN KEY ("fuelTypeId") REFERENCES "CarFuelType" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
@@ -15,4 +15,4 @@ CREATE TABLE "CarFuelType" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Car_licensePlace_key" ON "Car"("licensePlace");
+CREATE UNIQUE INDEX "Car_licensePlate_key" ON "Car"("licensePlate");

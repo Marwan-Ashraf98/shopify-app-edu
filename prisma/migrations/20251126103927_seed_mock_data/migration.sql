@@ -2,7 +2,7 @@ INSERT INTO "CarFuelType" ("name") VALUES ('Petrol');
 INSERT INTO "CarFuelType" ("name") VALUES ('Diesel');
 INSERT INTO "CarFuelType" ("name") VALUES ('Electric');
 
-INSERT INTO "Car" ("brand", "licensePlace", "year", "driverName", "fuelTypeId")
+INSERT INTO "Car" ("brand", "licensePlate", "year", "driverName", "fuelTypeId")
 VALUES (
     'Toyota', 
     'ABC-123', 
@@ -11,7 +11,7 @@ VALUES (
     (SELECT "id" FROM "CarFuelType" WHERE "name" = 'Petrol' LIMIT 1)
 );
 
-INSERT INTO "Car" ("brand", "licensePlace", "year", "fuelTypeId")
+INSERT INTO "Car" ("brand", "licensePlate", "year", "fuelTypeId")
 VALUES (
     'Tesla', 
     'ELC-999', 
@@ -19,7 +19,7 @@ VALUES (
     (SELECT "id" FROM "CarFuelType" WHERE "name" = 'Electric' LIMIT 1)
 );
 
-INSERT INTO "Car" ("brand", "licensePlace", "year", "driverName", "fuelTypeId")
+INSERT INTO "Car" ("brand", "licensePlate", "year", "driverName", "fuelTypeId")
 VALUES (
     'Ford', 
     'XYZ-555', 
