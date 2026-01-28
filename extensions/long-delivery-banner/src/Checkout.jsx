@@ -35,7 +35,7 @@ function Extension() {
 
   if (containsLongDelivery) {
     return (
-      <s-banner heading="Some items in your order have long delivery times." tone="warning" dismissible>
+      <s-banner heading="Some items in your order have long delivery times." tone="critical" dismissible>
         Please check estimated delivery time before placing the order.
       </s-banner>
     )
