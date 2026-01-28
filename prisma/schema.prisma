@@ -35,7 +35,7 @@ model Car {
   id            Int               @id @default(autoincrement())
   brand         String
   driverName    String?
-  licensePlace  String            @unique
+  licensePlate  String            @unique
   year          Int
   fuelType      CarFuelType       @relation(fields: [fuelTypeId], references: [id])
   fuelTypeId    Int
