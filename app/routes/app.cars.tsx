@@ -1,5 +1,5 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, useSearchParams, useNavigation } from "@remix-run/react";
+import { useLoaderData, useSearchParams, useNavigation, useSubmit } from "@remix-run/react";
 import {
   Page,
   Layout,
@@ -14,7 +14,7 @@ import {
   type IndexFiltersProps,
   IndexTableProps,
 } from "@shopify/polaris";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import db from "../db.server";
 
 type IndexTableSortDirection = 'ascending' | 'descending';
@@ -55,6 +55,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function CarsPage() {
   const { cars } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
+  const submit = useSubmit();
   const { mode, setMode } = useSetIndexFiltersMode();
   const navigation = useNavigation();
 
@@ -64,10 +65,12 @@ export default function CarsPage() {
 
   const isLoading = navigation.state === "loading";
 
-  const queryValue = searchParams.get("query") || "";
   const sortKey = searchParams.get("sortKey") || "id";
   const direction = (searchParams.get("direction") || "asc") as "asc" | "desc";
   const appliedFuelTypes = searchParams.get("fuelType")?.split(",") || [];
+  const queryParam = searchParams.get("query") || "";
+
+  const [queryValue, setQueryValue] = useState(queryParam);
 
   const headings = [
     { title: "ID", id: "id" },
@@ -105,7 +108,23 @@ export default function CarsPage() {
     }
   };
 
-  const handleQueryChange = useCallback((v: string) => updateParams({ query: v }), [searchParams]);
+  const handleQueryChange = useCallback((value: string) => {
+    setQueryValue(value);
+    
+    const formData = new FormData();
+    formData.set("query", value);
+    // Persist other filters
+    if (sortKey) formData.set("sortKey", sortKey);
+    if (direction) formData.set("direction", direction);
+    if (appliedFuelTypes.length) formData.set("fuelType", appliedFuelTypes.join(","));
+    
+    // Debounce the request by 300ms
+    const timer = setTimeout(() => {
+       submit(formData, { replace: true, method: "get" });
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, [sortKey, direction, appliedFuelTypes, submit]);
   const handleFuelFilterChange = (v: string[]) => updateParams({ fuelType: v.join(",") });
 
   const sortOptions: IndexFiltersProps["sortOptions"] = [
